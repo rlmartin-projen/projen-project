@@ -2,7 +2,7 @@ import { Project, ProjectOptions, SampleFile, TextFile } from 'projen';
 import { allCases, AllCases, loadFiles, parsePackageName } from './helpers';
 
 export enum FileType {
-  Scaffolding, Generated
+  SCAFFOLDING, GENERATED
 }
 
 interface InternalProjenProjectOptions {
@@ -34,8 +34,8 @@ export function loadSettings<O extends ProjectOptions>(options: O): ProjectSetti
     _name: allCases(packageName.name),
   };
   const files = [
-    ...loadFiles('../files/scaffolding', projectOpts, FileType.Scaffolding),
-    ...loadFiles('../files/generated', projectOpts, FileType.Generated),
+    ...loadFiles('../files/scaffolding', projectOpts, FileType.SCAFFOLDING),
+    ...loadFiles('../files/generated', projectOpts, FileType.GENERATED),
   ];
   return {
     options: {
@@ -53,10 +53,10 @@ export function addFiles(project: Project, files: ProjectFile[]) {
     const { fileName, contents, fileType } = file;
     if (fileName === 'README.md') return; // readme is set in project creation above, so skip here
     switch (fileType) {
-      case FileType.Scaffolding:
+      case FileType.SCAFFOLDING:
         new SampleFile(project, fileName, { contents });
         break;
-      case FileType.Generated:
+      case FileType.GENERATED:
         new TextFile(project, fileName, { lines: contents.split('\n') });
         break;
       default:

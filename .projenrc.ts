@@ -1,16 +1,16 @@
-import { typescript } from 'projen';
+import { cdk } from 'projen';
 import { NpmAccess } from 'projen/lib/javascript';
 
-const dependencies = ['projen@^0'];
-const bundledDependencies = ['liquidjs@^9'];
+const dependencies = ['projen@~0'];
+const bundledDependencies = ['liquidjs@~9'];
 const majorVersion = 0;
 
-const project = new typescript.TypeScriptProject({
-  authorName: 'Ryan Martin',
-  authorEmail: 'rlmartin@gmail.com',
+const project = new cdk.JsiiProject({
+  author: 'Ryan Martin',
+  authorAddress: 'rlmartin@gmail.com',
   defaultReleaseBranch: 'main',
   name: '@rlmartin-projen/projen-project',
-  repository: 'git@github.com:rlmartin/projen-project.git',
+  repositoryUrl: 'git@github.com:rlmartin/projen-project.git',
   projenrcTs: true,
   releaseToNpm: true,
   npmAccess: NpmAccess.PUBLIC,
@@ -20,6 +20,7 @@ const project = new typescript.TypeScriptProject({
   },
   deps: dependencies.concat(bundledDependencies),
   peerDeps: dependencies,
+  bundledDeps: bundledDependencies,
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */

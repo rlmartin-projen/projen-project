@@ -1,7 +1,7 @@
-import { typescript } from 'projen';
+import { cdk } from 'projen';
 import { addFiles, loadSettings } from './core';
 
-export interface ProjenProjectOptions extends typescript.TypeScriptProjectOptions {
+export interface ProjenProjectOptions extends cdk.JsiiProjectOptions {
 }
 
 /**
@@ -9,7 +9,7 @@ export interface ProjenProjectOptions extends typescript.TypeScriptProjectOption
  *
  * @pjid projen
  */
-export class ProjenProject extends typescript.TypeScriptProject {
+export class ProjenProject extends cdk.JsiiProject {
   constructor(options: ProjenProjectOptions) {
     const { options: projectOpts, files } = loadSettings(options);
     super(projectOpts);
