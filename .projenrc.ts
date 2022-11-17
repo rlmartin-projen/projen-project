@@ -9,7 +9,7 @@ const project = new typescript.TypeScriptProject({
   authorName: 'Ryan Martin',
   authorEmail: 'rlmartin@gmail.com',
   defaultReleaseBranch: 'main',
-  name: 'projen-project',
+  name: '@rlmartin-projen/projen-project',
   repository: 'git@github.com:rlmartin/projen-project.git',
   projenrcTs: true,
   releaseToNpm: true,
