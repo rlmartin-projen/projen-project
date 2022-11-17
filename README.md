@@ -7,9 +7,8 @@ This is a projen template for creating other projen templates.
 ### Creating a new projen template repo
 ```
 npx projen new \
-  --from projen-project \
-  --projenrc-ts \
-  projen
+  --from @rlmartin-projen/projen-project \
+  --projenrc-ts
 ```
 
 
@@ -31,3 +30,11 @@ Template files that are either static or use simple parameterization can be plac
 Files with a `.liquid` extension will be run through the [Liquid](https://shopify.github.io/liquid/) templating engine, with project-level options passed into the engine. 
 
 Files with any other extension will be copied as-is into the project.
+
+Template file names are also run through the templating engine, and can thus include dynamic naming.
+
+
+#### Convenience properties
+For some commonly-used string properties, a convenience property is automatically injected and accessible for use in templates. These all begin with an underscore (`_`) and include sub-properties for common string formats: `camel`, `kebab`, `pascal`, `snake`, `title`. The currently-supported convenience properties are:
+
+- `_name`
