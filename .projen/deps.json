@@ -76,11 +76,6 @@
       "type": "build"
     },
     {
-      "name": "liquidjs",
-      "version": "^9",
-      "type": "bundled"
-    },
-    {
       "name": "projen",
       "version": "^0",
       "type": "peer"

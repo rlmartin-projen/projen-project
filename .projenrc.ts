@@ -20,7 +20,6 @@ const project = new typescript.TypeScriptProject({
   },
   deps: dependencies.concat(bundledDependencies),
   peerDeps: dependencies,
-  bundledDeps: bundledDependencies,
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */

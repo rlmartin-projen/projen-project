@@ -56,9 +56,6 @@
     "liquidjs": "^9",
     "projen": "^0"
   },
-  "bundledDependencies": [
-    "liquidjs"
-  ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "publishConfig": {
