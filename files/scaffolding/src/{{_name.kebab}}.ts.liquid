@@ -1,10 +1,10 @@
-import { JsiiProject, JsiiProjectOptions } from 'projen/lib/cdk';
+import { cdk } from 'projen';
 import { addFiles, loadSettings } from 'projen-project';
 
-export interface {{_name.pascal}}Options extends JsiiProjectOptions {
+export interface {{_name.pascal}}Options extends cdk.JsiiProjectOptions {
 }
 
-export class {{_name.pascal}} extends JsiiProject {
+export class {{_name.pascal}} extends cdk.JsiiProject {
   constructor(options: {{_name.pascal}}Options) {
     const { options: projectOpts, files } = loadSettings(options)
     super(projectOpts);

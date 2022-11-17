@@ -59,22 +59,23 @@ export function loadFiles<T extends object>(dir: string, options: T, fileType: F
 export interface PackageName {
   readonly org?: string;
   readonly name: string;
+  readonly version?: string;
+}
+
+export function packageToString(packageName: PackageName): string {
+  return `${packageName.org ? '@' : ''}${packageName.org ?? ''}${packageName.org ? '/' : ''}${packageName.name}${packageName.version ? '@' : ''}${packageName.version ?? ''}`;
 }
 
 export function parsePackageName(str: string): PackageName {
-  const parts = str.split('/');
-  switch (parts.length) {
-    case 1:
-      return {
-        name: parts[0],
-      };
-    case 2:
-      return {
-        org: parts[0].replace(/^@/, ''),
-        name: parts[1],
-      };
-    default:
-      throw new Error('Invalid package name');
+  const parts = str.match(/^(@([^\/]+)\/)?([^@\/]+)(@(.+))?$/);
+  if (parts) {
+    return {
+      org: parts[2],
+      name: parts[3],
+      version: parts[5],
+    };
+  } else {
+    throw new Error('Invalid package name');
   }
 }
 
@@ -91,6 +92,23 @@ export function snakeCase(str: string): string {
     .replace(/_+/g, '_')
     .replace(/^_/, '')
     .replace(/_$/, '');
+}
+
+export function squashPackageNames(packageNames: PackageName[]): { [key: string]: PackageName } {
+  return packageNames.reduce((currentMap, packageName) => {
+    currentMap[packageName.name] = packageName;
+    return currentMap;
+  }, Object.assign({}));
+}
+
+// Will ensure that a package appears only once in the list, using the
+// version that is last in the list.
+// If a package appears in the list under two different orgs, they are
+// considered the same package, to allow for overriding using forks.
+export function squashPackages(packages: string[]): string[] {
+  const parsed = packages.map(parsePackageName);
+  const deduped = squashPackageNames(parsed);
+  return Object.values(deduped).map(packageToString);
 }
 
 export function titleCase(str: string): string {

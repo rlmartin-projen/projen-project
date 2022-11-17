@@ -1,4 +1,4 @@
-import { allCases, camelCase, kebabCase, parsePackageName, pascalCase, snakeCase, titleCase } from '../src/helpers';
+import { allCases, camelCase, kebabCase, packageToString, parsePackageName, pascalCase, snakeCase, squashPackages, titleCase } from '../src/helpers';
 
 test('allCases', () => {
   expect(allCases('Foo Bar')).toStrictEqual({
@@ -36,10 +36,20 @@ test('kebabCase', () => {
   expect(kebabCase('FOOBAR')).toBe('f-o-o-b-a-r');
 });
 
+test('packageToString', () => {
+  expect(packageToString({ name: 'foo-bar' })).toBe('foo-bar');
+  expect(packageToString({ org: 'foo', name: 'bar' })).toBe('@foo/bar');
+  expect(packageToString({ name: 'foo-bar', version: '1.0.0' })).toBe('foo-bar@1.0.0');
+  expect(packageToString({ org: 'foo', name: 'bar', version: '1.0.0' })).toBe('@foo/bar@1.0.0');
+});
+
 test('parsePackageName', () => {
-  expect(parsePackageName('foo-bar')).toStrictEqual({ name: 'foo-bar' });
-  expect(parsePackageName('@foo/bar')).toStrictEqual({ org: 'foo', name: 'bar' });
-  expect(() => parsePackageName('foo/bar/baz')).toThrowError('Invalid package name');
+  expect(parsePackageName('foo-bar')).toStrictEqual({ org: undefined, name: 'foo-bar', version: undefined });
+  expect(parsePackageName('@foo/bar')).toStrictEqual({ org: 'foo', name: 'bar', version: undefined });
+  expect(parsePackageName('foo-bar@1.0.0')).toStrictEqual({ org: undefined, name: 'foo-bar', version: '1.0.0' });
+  expect(parsePackageName('@foo/bar@1.0.0')).toStrictEqual({ org: 'foo', name: 'bar', version: '1.0.0' });
+  expect(() => parsePackageName('@foo/bar/baz')).toThrowError('Invalid package name');
+  expect(() => parsePackageName('foo/bar')).toThrowError('Invalid package name');
 });
 
 test('pascalCase', () => {
@@ -66,6 +76,12 @@ test('snakeCase', () => {
   expect(snakeCase('___FOO___BAR___')).toBe('f_o_o_b_a_r');
   expect(snakeCase('FOO BAR')).toBe('f_o_o_b_a_r');
   expect(snakeCase('FOOBAR')).toBe('f_o_o_b_a_r');
+});
+
+test('squashPackages', () => {
+  expect(squashPackages(['foo-bar@1.0.0', 'foo-bar@0.0.1'])).toStrictEqual(['foo-bar@0.0.1']);
+  expect(squashPackages(['foo-bar@1.0.0', 'foo-baz', 'foo-bar@0.0.1'])).toStrictEqual(['foo-bar@0.0.1', 'foo-baz']);
+  expect(squashPackages(['@foo/foo-bar@1.0.0', '@baz/foo-bar@0.0.1'])).toStrictEqual(['@baz/foo-bar@0.0.1']);
 });
 
 test('titleCase', () => {

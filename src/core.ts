@@ -1,5 +1,5 @@
-import { Project, ProjectOptions, SampleFile, TextFile } from 'projen';
-import { allCases, AllCases, loadFiles, parsePackageName } from './helpers';
+import { Project, SampleFile, TextFile, cdk } from 'projen';
+import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
   SCAFFOLDING, GENERATED
@@ -15,13 +15,20 @@ export interface ProjectFile {
   readonly fileType: FileType;
 }
 
-export interface ProjectSettings<O extends ProjectOptions> {
+export interface ProjectSettings<O extends cdk.JsiiProjectOptions> {
   readonly options: O;
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends ProjectOptions>(options: O): ProjectSettings<O> {
+export function loadSettings<O extends cdk.JsiiProjectOptions>(options: O): ProjectSettings<O> {
+  const dependencies = ['projen@~0'];
+  const bundledDependencies = ['liquidjs@~9'];
   const packageName = parsePackageName(options.name);
+  const devDepsMap = squashPackageNames((options.devDeps ?? []).map(parsePackageName));
+  if (devDepsMap['projen-project']) {
+    dependencies.push(packageToString(devDepsMap['projen-project']));
+    delete devDepsMap['projen-project'];
+  }
   const projectOpts: O & InternalProjenProjectOptions = {
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
@@ -31,6 +38,10 @@ export function loadSettings<O extends ProjectOptions>(options: O): ProjectSetti
         declaration: false,
       },
     },
+    deps: squashPackages([...(options.deps ?? []), ...bundledDependencies, ...dependencies]),
+    devDeps: Object.values(devDepsMap).map(packageToString),
+    peerDeps: squashPackages([...(options.peerDeps ?? []), ...dependencies]),
+    bundledDeps: squashPackages([...(options.bundledDeps ?? []), ...bundledDependencies]),
     _name: allCases(packageName.name),
   };
   const files = [

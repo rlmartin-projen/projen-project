@@ -91,6 +91,7 @@ const packageName: PackageName = { ... }
 | --- | --- | --- |
 | <code><a href="#@rlmartin-projen/projen-project.PackageName.property.name">name</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@rlmartin-projen/projen-project.PackageName.property.org">org</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.PackageName.property.version">version</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -108,6 +109,16 @@ public readonly name: string;
 
 ```typescript
 public readonly org: string;
+```
+
+- *Type:* string
+
+---
+
+##### `version`<sup>Optional</sup> <a name="version" id="@rlmartin-projen/projen-project.PackageName.property.version"></a>
+
+```typescript
+public readonly version: string;
 ```
 
 - *Type:* string
@@ -179,7 +190,7 @@ const projectSettings: ProjectSettings = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.files">files</a></code> | <code><a href="#@rlmartin-projen/projen-project.ProjectFile">ProjectFile</a>[]</code> | *No description.* |
-| <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.options">options</a></code> | <code>projen.ProjectOptions</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.options">options</a></code> | <code>projen.cdk.JsiiProjectOptions</code> | *No description.* |
 
 ---
 
@@ -196,10 +207,10 @@ public readonly files: ProjectFile[];
 ##### `options`<sup>Required</sup> <a name="options" id="@rlmartin-projen/projen-project.ProjectSettings.property.options"></a>
 
 ```typescript
-public readonly options: ProjectOptions;
+public readonly options: JsiiProjectOptions;
 ```
 
-- *Type:* projen.ProjectOptions
+- *Type:* projen.cdk.JsiiProjectOptions
 
 ---
 
