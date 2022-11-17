@@ -1,5 +1,5 @@
 import { cdk } from 'projen';
-import { addFiles, loadSettings } from 'projen-project';
+import { addFiles, loadSettings } from '@rlmartin-projen/projen-project';
 
 export interface {{_name.pascal}}Options extends cdk.JsiiProjectOptions {
 }
@@ -9,6 +9,6 @@ export class {{_name.pascal}} extends cdk.JsiiProject {
     const { options: projectOpts, files } = loadSettings(options)
     super(projectOpts);
     addFiles(this, files);
-    // Add non-templates resources here
+    // Add non-templated resources here
   }
 }
