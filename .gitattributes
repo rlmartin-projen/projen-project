@@ -8,7 +8,6 @@
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/release-dev.yml linguist-generated
 /.github/workflows/release.yml linguist-generated
-/.github/workflows/upgrade-dev.yml linguist-generated
 /.github/workflows/upgrade-main.yml linguist-generated
 /.gitignore linguist-generated
 /.mergify.yml linguist-generated
