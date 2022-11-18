@@ -30,6 +30,8 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
+!files/scaffolding/files/generated/.seed
+!files/scaffolding/files/scaffolding/.seed
 !/.projenrc.js
 /test-reports/
 junit.xml

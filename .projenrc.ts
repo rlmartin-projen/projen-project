@@ -21,6 +21,10 @@ const project = new cdk.JsiiProject({
   deps: dependencies.concat(bundledDependencies),
   peerDeps: dependencies,
   bundledDeps: bundledDependencies,
+  gitignore: [
+    '!files/scaffolding/files/generated/.seed',
+    '!files/scaffolding/files/scaffolding/.seed',
+  ],
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
