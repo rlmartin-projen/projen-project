@@ -21,7 +21,11 @@ export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends javascript.NodeProjectOptions>(options: O, isProjenProject: boolean = false, filesDir: string = path.join(__dirname, '../files')): ProjectSettings<O> {
+export function loadSettings<O extends javascript.NodeProjectOptions>(
+  options: O,
+  filesDir: string,
+  isProjenProject: boolean = false,
+): ProjectSettings<O> {
   const dependencies = ['projen@~0'];
   const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
   const packageName = parsePackageName(options.name);
