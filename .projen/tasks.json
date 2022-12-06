@@ -230,8 +230,7 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --updateSnapshot",
-          "receiveArgs": true
+          "exec": "jest --passWithNoTests --updateSnapshot"
         },
         {
           "spawn": "eslint"

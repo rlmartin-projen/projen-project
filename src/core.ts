@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Project, SampleFile, TextFile, javascript } from 'projen';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
@@ -20,7 +21,7 @@ export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends javascript.NodeProjectOptions>(options: O, isProjenProject: boolean = false): ProjectSettings<O> {
+export function loadSettings<O extends javascript.NodeProjectOptions>(options: O, isProjenProject: boolean = false, filesDir: string = path.join(__dirname, '../files')): ProjectSettings<O> {
   const dependencies = ['projen@~0'];
   const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
   const packageName = parsePackageName(options.name);
@@ -45,8 +46,8 @@ export function loadSettings<O extends javascript.NodeProjectOptions>(options: O
     _name: allCases(packageName.name),
   };
   const files = [
-    ...loadFiles('../files/scaffolding', projectOpts, FileType.SCAFFOLDING),
-    ...loadFiles('../files/generated', projectOpts, FileType.GENERATED),
+    ...loadFiles(path.join(filesDir, 'scaffolding'), projectOpts, FileType.SCAFFOLDING),
+    ...loadFiles(path.join(filesDir, 'generated'), projectOpts, FileType.GENERATED),
   ];
   return {
     options: {

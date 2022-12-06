@@ -33,10 +33,9 @@ export function kebabCase(str: string): string {
   return snakeCase(str).replace(/_/g, '-');
 }
 
-export function loadFiles<T extends object>(dir: string, options: T, fileType: FileType): ProjectFile[] {
+export function loadFiles<T extends object>(fullPath: string, options: T, fileType: FileType): ProjectFile[] {
   const liquidEngine = new Liquid();
   const liquidExt: RegExp = /.liquid$/i;
-  const fullPath = path.join(__dirname, dir);
   return walkDirectory(fullPath).map(fileName => {
     const contents = fs.readFileSync(fileName, 'utf-8');
     fileName = fileName.replace(`${fullPath}${path.sep}`, '');
