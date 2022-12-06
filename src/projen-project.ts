@@ -11,7 +11,7 @@ export interface ProjenProjectOptions extends cdk.JsiiProjectOptions {
  */
 export class ProjenProject extends cdk.JsiiProject {
   constructor(options: ProjenProjectOptions) {
-    const { options: projectOpts, files } = loadSettings(options);
+    const { options: projectOpts, files } = loadSettings(options, true);
     super(projectOpts);
     // Files from templates
     addFiles(this, files);
