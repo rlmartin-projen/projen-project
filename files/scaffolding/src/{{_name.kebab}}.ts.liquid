@@ -6,7 +6,7 @@ export interface {{_name.pascal}}Options extends cdk.JsiiProjectOptions {
 
 export class {{_name.pascal}} extends cdk.JsiiProject {
   constructor(options: {{_name.pascal}}Options) {
-    const { options: projectOpts, files } = loadSettings(options)
+    const { options: projectOpts, files } = loadSettings(options, true)
     super(projectOpts);
     addFiles(this, files);
     // Add non-templated resources here

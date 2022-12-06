@@ -1,4 +1,4 @@
-import { Project, SampleFile, TextFile, cdk } from 'projen';
+import { Project, SampleFile, TextFile, javascript } from 'projen';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
@@ -15,17 +15,17 @@ export interface ProjectFile {
   readonly fileType: FileType;
 }
 
-export interface ProjectSettings<O extends cdk.JsiiProjectOptions> {
+export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
   readonly options: O;
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends cdk.JsiiProjectOptions>(options: O): ProjectSettings<O> {
+export function loadSettings<O extends javascript.NodeProjectOptions>(options: O, isProjenProject: boolean = false): ProjectSettings<O> {
   const dependencies = ['projen@~0'];
-  const bundledDependencies = ['liquidjs@~9'];
+  const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
   const packageName = parsePackageName(options.name);
   const devDepsMap = squashPackageNames((options.devDeps ?? []).map(parsePackageName));
-  if (devDepsMap['projen-project']) {
+  if (devDepsMap['projen-project'] && isProjenProject) {
     dependencies.push(packageToString(devDepsMap['projen-project']));
     delete devDepsMap['projen-project'];
   }
