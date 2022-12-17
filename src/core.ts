@@ -68,6 +68,7 @@ export function addFiles(project: Project, files: ProjectFile[]) {
   files.forEach(file => {
     const { fileName, contents, fileType } = file;
     if (fileName === 'README.md') return; // readme is set in project creation above, so skip here
+    if (fileName === '.seed') return; // Ignore this; used only to create dirs in this template.
     project.tryRemoveFile(fileName);
     switch (fileType) {
       case FileType.SCAFFOLDING:
