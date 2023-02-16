@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { Project, SampleFile, TextFile, javascript } from 'projen';
+import { SampleFile, TextFile, javascript } from 'projen';
+import { TypeScriptProject } from 'projen/lib/typescript';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
@@ -64,7 +65,7 @@ export function loadSettings<O extends javascript.NodeProjectOptions>(
   };
 }
 
-export function addFiles(project: Project, files: ProjectFile[]) {
+export function addFiles(project: TypeScriptProject, files: ProjectFile[]) {
   files.forEach(file => {
     const { fileName, contents, fileType } = file;
     if (fileName === 'README.md') return; // readme is set in project creation above, so skip here
@@ -76,6 +77,7 @@ export function addFiles(project: Project, files: ProjectFile[]) {
         break;
       case FileType.GENERATED:
         new TextFile(project, fileName, { lines: contents.split('\n') });
+        if (fileName.match(/\.[j|t]s$/i)) project.eslint?.addIgnorePattern(fileName);
         break;
       default:
         throw `fileType [${fileType}] not implemented.`;
