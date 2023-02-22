@@ -40,7 +40,7 @@ export function loadSettings<O extends javascript.NodeProjectOptions>(
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {
       compilerOptions: {
-        outDir: 'dist',
+        outDir: options.artifactsDirectory ?? 'dist',
         declaration: false,
       },
     },
