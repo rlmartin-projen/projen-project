@@ -1,3 +1,44 @@
+# projen-project
+This is a projen template for creating other projen templates.
+
+
+## Usage
+
+### Creating a new projen template repo
+```
+npx projen new \
+  --from @rlmartin-projen/projen-project \
+  --projenrc-ts
+```
+
+
+### Terminology: scaffolding vs generated
+When creating a new projen project template, it is best to be clear about which files are generated once vs which are under control of the template.
+
+
+#### Scaffolding
+Scaffolding files are generated only once - at the time of project creation - and from that point forward are the responsibility of the developer. These can be edited freely and will never get overwritten by projen.
+
+
+#### Generated
+Generated files should never be touched by the developer, because the projen template will overwrite any changes. This is indicated even down to the the level of the filesystem, because generated files are marked as read-only. While developers can change those permissions, this is not advised because the subsequent run of `npx projen` will discard any manual edits made to those files.
+
+
+### Adding simple template files
+Template files that are either static or use simple parameterization can be placed in either the `files/scaffolding` or `files/generated` folders.
+
+Files with a `.liquid` extension will be run through the [Liquid](https://shopify.github.io/liquid/) templating engine, with project-level options passed into the engine.
+
+Files with any other extension will be copied as-is into the project.
+
+Template file names are also run through the templating engine, and can thus include dynamic naming.
+
+
+#### Convenience properties
+For some commonly-used string properties, a convenience property is automatically injected and accessible for use in templates. These all begin with an underscore (`_`) and include sub-properties for common string formats: `camel`, `kebab`, `pascal`, `snake`, `title`. The currently-supported convenience properties are:
+
+- `_name`
+
 # API Reference <a name="API Reference" id="api-reference"></a>
 
 
@@ -230,13 +271,14 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | --- | --- | --- |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.name">name</a></code> | <code>string</code> | This is the name of your project. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.commitGenerated">commitGenerated</a></code> | <code>boolean</code> | Whether to commit the managed files by default. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.gitIgnoreOptions">gitIgnoreOptions</a></code> | <code>projen.IgnoreFileOptions</code> | Configuration options for .gitignore file. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.gitOptions">gitOptions</a></code> | <code>projen.GitOptions</code> | Configuration options for git. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.logging">logging</a></code> | <code>projen.LoggerOptions</code> | Configure logging options such as verbosity. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.outdir">outdir</a></code> | <code>string</code> | The root directory of the project. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.parent">parent</a></code> | <code>projen.Project</code> | The parent project, if this project is part of a bigger project. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.projenCommand">projenCommand</a></code> | <code>string</code> | The shell command to use in order to run the projen CLI. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.projenrcJson">projenrcJson</a></code> | <code>boolean</code> | Generate (once) .projenrc.json (in JSON). Set to `false` in order to disable .projenrc.json generation. |
-| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.projenrcJsonOptions">projenrcJsonOptions</a></code> | <code>projen.ProjenrcOptions</code> | Options for .projenrc.json. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.projenrcJsonOptions">projenrcJsonOptions</a></code> | <code>projen.ProjenrcJsonOptions</code> | Options for .projenrc.json. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.renovatebot">renovatebot</a></code> | <code>boolean</code> | Use renovatebot to handle dependency upgrades. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.renovatebotOptions">renovatebotOptions</a></code> | <code>projen.RenovatebotOptions</code> | Options for renovatebot. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.autoApproveOptions">autoApproveOptions</a></code> | <code>projen.github.AutoApproveOptions</code> | Enable and configure the 'auto approve' workflow. |
@@ -331,6 +373,7 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.mutableBuild">mutableBuild</a></code> | <code>boolean</code> | Automatically update files modified during builds to pull-request branches. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.npmignore">npmignore</a></code> | <code>string[]</code> | Additional entries to .npmignore. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.npmignoreEnabled">npmignoreEnabled</a></code> | <code>boolean</code> | Defines an .npmignore file. Normally this is only needed for libraries that are packaged as tarballs. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.npmIgnoreOptions">npmIgnoreOptions</a></code> | <code>projen.IgnoreFileOptions</code> | Configuration options for .npmignore file. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.package">package</a></code> | <code>boolean</code> | Defines a `package` task that will produce an npm tarball under the artifacts directory (e.g. `dist`). |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.prettier">prettier</a></code> | <code>boolean</code> | Setup prettier. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.prettierOptions">prettierOptions</a></code> | <code>projen.javascript.PrettierOptions</code> | Prettier options. |
@@ -347,6 +390,7 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.workflowGitIdentity">workflowGitIdentity</a></code> | <code>projen.github.GitIdentity</code> | The git identity to use in workflows. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version to use in GitHub workflows. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.disableTsconfig">disableTsconfig</a></code> | <code>boolean</code> | Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler). |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.disableTsconfigDev">disableTsconfigDev</a></code> | <code>boolean</code> | Do not generate a `tsconfig.dev.json` file. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.docgen">docgen</a></code> | <code>boolean</code> | Docgen by Typedoc. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.docsDirectory">docsDirectory</a></code> | <code>string</code> | Docs directory. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.entrypointTypes">entrypointTypes</a></code> | <code>string</code> | The .d.ts file that includes the type declarations for this module. |
@@ -371,6 +415,7 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.docgenFilePath">docgenFilePath</a></code> | <code>string</code> | File path for generated docs. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.dotnet">dotnet</a></code> | <code>projen.cdk.JsiiDotNetTarget</code> | *No description.* |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.excludeTypescript">excludeTypescript</a></code> | <code>string[]</code> | Accepts a list of glob patterns. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.jsiiVersion">jsiiVersion</a></code> | <code>string</code> | Version of the jsii compiler to use. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.publishToGo">publishToGo</a></code> | <code>projen.cdk.JsiiGoTarget</code> | Publish Go bindings to a git repository. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.publishToMaven">publishToMaven</a></code> | <code>projen.cdk.JsiiJavaTarget</code> | Publish to maven. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.publishToNuget">publishToNuget</a></code> | <code>projen.cdk.JsiiDotNetTarget</code> | Publish to NuGet. |
@@ -403,6 +448,18 @@ public readonly commitGenerated: boolean;
 - *Default:* true
 
 Whether to commit the managed files by default.
+
+---
+
+##### `gitIgnoreOptions`<sup>Optional</sup> <a name="gitIgnoreOptions" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.gitIgnoreOptions"></a>
+
+```typescript
+public readonly gitIgnoreOptions: IgnoreFileOptions;
+```
+
+- *Type:* projen.IgnoreFileOptions
+
+Configuration options for .gitignore file.
 
 ---
 
@@ -493,10 +550,10 @@ Generate (once) .projenrc.json (in JSON). Set to `false` in order to disable .pr
 ##### `projenrcJsonOptions`<sup>Optional</sup> <a name="projenrcJsonOptions" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.projenrcJsonOptions"></a>
 
 ```typescript
-public readonly projenrcJsonOptions: ProjenrcOptions;
+public readonly projenrcJsonOptions: ProjenrcJsonOptions;
 ```
 
-- *Type:* projen.ProjenrcOptions
+- *Type:* projen.ProjenrcJsonOptions
 - *Default:* default options
 
 Options for .projenrc.json.
@@ -581,7 +638,7 @@ public readonly clobber: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* true
+- *Default:* true, but false for subprojects
 
 Add a `clobber` task which resets the repo to origin.
 
@@ -1278,7 +1335,9 @@ Options for privately hosted scoped packages.
 
 ---
 
-##### `scripts`<sup>Optional</sup> <a name="scripts" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.scripts"></a>
+##### ~~`scripts`~~<sup>Optional</sup> <a name="scripts" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.scripts"></a>
+
+- *Deprecated:* use `project.addTask()` or `package.setScript()`
 
 ```typescript
 public readonly scripts: {[ key: string ]: string};
@@ -1291,6 +1350,7 @@ npm scripts to include.
 
 If a script has the same name as a standard script,
 the standard script will be overwritten.
+Also adds the script as a task.
 
 ---
 
@@ -1870,6 +1930,18 @@ Defines an .npmignore file. Normally this is only needed for libraries that are 
 
 ---
 
+##### `npmIgnoreOptions`<sup>Optional</sup> <a name="npmIgnoreOptions" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.npmIgnoreOptions"></a>
+
+```typescript
+public readonly npmIgnoreOptions: IgnoreFileOptions;
+```
+
+- *Type:* projen.IgnoreFileOptions
+
+Configuration options for .npmignore file.
+
+---
+
 ##### `package`<sup>Optional</sup> <a name="package" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.package"></a>
 
 ```typescript
@@ -2077,6 +2149,19 @@ public readonly disableTsconfig: boolean;
 - *Default:* false
 
 Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler).
+
+---
+
+##### `disableTsconfigDev`<sup>Optional</sup> <a name="disableTsconfigDev" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.disableTsconfigDev"></a>
+
+```typescript
+public readonly disableTsconfigDev: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Do not generate a `tsconfig.dev.json` file.
 
 ---
 
@@ -2406,6 +2491,26 @@ that cannot be compiled with jsii's compiler settings.
 
 ---
 
+##### `jsiiVersion`<sup>Optional</sup> <a name="jsiiVersion" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.jsiiVersion"></a>
+
+```typescript
+public readonly jsiiVersion: string;
+```
+
+- *Type:* string
+- *Default:* "1.x"
+
+Version of the jsii compiler to use.
+
+Set to "*" if you want to manually manage the version of jsii in your
+project by managing updates to `package.json` on your own.
+
+NOTE: The jsii compiler releases since 5.0.0 are not semantically versioned
+and should remain on the same minor, so we recommend using a `~` dependency
+(e.g. `~5.0.0`).
+
+---
+
 ##### `publishToGo`<sup>Optional</sup> <a name="publishToGo" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.publishToGo"></a>
 
 ```typescript
@@ -2534,6 +2639,7 @@ new ProjenProject(options: ProjenProjectOptions)
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.addFields">addFields</a></code> | Directly set fields in `package.json`. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.addKeywords">addKeywords</a></code> | Adds keywords to package.json (deduplicated). |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.addPeerDeps">addPeerDeps</a></code> | Defines peer dependencies. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProject.addScripts">addScripts</a></code> | Replaces the contents of multiple npm package.json scripts. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.addTestCommand">addTestCommand</a></code> | DEPRECATED. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.hasScript">hasScript</a></code> | Indicates if a script by the name name is defined. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.removeScript">removeScript</a></code> | Removes the npm script (always successful). |
@@ -2950,6 +3056,22 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 
 ---
 
+##### `addScripts` <a name="addScripts" id="@rlmartin-projen/projen-project.ProjenProject.addScripts"></a>
+
+```typescript
+public addScripts(scripts: {[ key: string ]: string}): void
+```
+
+Replaces the contents of multiple npm package.json scripts.
+
+###### `scripts`<sup>Required</sup> <a name="scripts" id="@rlmartin-projen/projen-project.ProjenProject.addScripts.parameter.scripts"></a>
+
+- *Type:* {[ key: string ]: string}
+
+The scripts to set.
+
+---
+
 ##### ~~`addTestCommand`~~ <a name="addTestCommand" id="@rlmartin-projen/projen-project.ProjenProject.addTestCommand"></a>
 
 ```typescript
@@ -2964,7 +3086,7 @@ DEPRECATED.
 
 ---
 
-##### `hasScript` <a name="hasScript" id="@rlmartin-projen/projen-project.ProjenProject.hasScript"></a>
+##### ~~`hasScript`~~ <a name="hasScript" id="@rlmartin-projen/projen-project.ProjenProject.hasScript"></a>
 
 ```typescript
 public hasScript(name: string): boolean
