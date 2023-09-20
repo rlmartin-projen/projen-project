@@ -95,7 +95,7 @@ export function snakeCase(str: string): string {
 
 export function squashPackageNames(packageNames: PackageName[]): { [key: string]: PackageName } {
   return packageNames.reduce((currentMap, packageName) => {
-    currentMap[packageName.name] = packageName;
+    currentMap[(packageName.org?.toLowerCase() === 'types' ? '@types' : '') + packageName.name] = packageName;
     return currentMap;
   }, Object.assign({}));
 }
