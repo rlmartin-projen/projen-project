@@ -82,6 +82,8 @@ test('squashPackages', () => {
   expect(squashPackages(['foo-bar@1.0.0', 'foo-bar@0.0.1'])).toStrictEqual(['foo-bar@0.0.1']);
   expect(squashPackages(['foo-bar@1.0.0', 'foo-baz', 'foo-bar@0.0.1'])).toStrictEqual(['foo-bar@0.0.1', 'foo-baz']);
   expect(squashPackages(['@foo/foo-bar@1.0.0', '@baz/foo-bar@0.0.1'])).toStrictEqual(['@baz/foo-bar@0.0.1']);
+  expect(squashPackages(['@foo/foo-bar@1.0.0', '@baz/foo-bar@0.0.1', '@types/foo-bar@0.0.2'])).toStrictEqual(['@baz/foo-bar@0.0.1', '@types/foo-bar@0.0.2']);
+  expect(squashPackages(['@types/foo-bar@0.0.2', '@foo/foo-bar@1.0.0', '@baz/foo-bar@0.0.1'])).toStrictEqual(['@types/foo-bar@0.0.2', '@baz/foo-bar@0.0.1']);
 });
 
 test('titleCase', () => {
