@@ -1,7 +1,8 @@
 import * as path from 'path';
 import { SampleFile, TextFile, javascript } from 'projen';
-import { TypeScriptProject } from 'projen/lib/typescript';
-import { allCases, AllCases, loadFiles, mergeUnique, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
+import { TypescriptConfigOptions } from 'projen/lib/javascript';
+import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
   SCAFFOLDING, GENERATED
@@ -9,6 +10,7 @@ export enum FileType {
 
 interface InternalProjenProjectOptions {
   readonly _name: AllCases;
+  readonly tsconfig: TypescriptConfigOptions;
 }
 
 export interface ProjectFile {
@@ -22,11 +24,15 @@ export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends javascript.NodeProjectOptions>(
-  options: O,
+// function hasTsconfig<O extends javascript.NodeProjectOptions>(options: O | typescript.TypeScriptProject): options is typescript.TypeScriptProject {
+//   return (options as typescript.TypeScriptProject).tsconfig !== undefined;
+// }
+
+export function loadSettings<O extends javascript.NodeProjectOptions, T extends TypeScriptProjectOptions>(
+  options: O | T,
   filesDir: string,
   isProjenProject: boolean = false,
-): ProjectSettings<O> {
+): ProjectSettings<O | T> {
   const dependencies = ['projen@~0'];
   const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
   const packageName = parsePackageName(options.name);
@@ -35,21 +41,17 @@ export function loadSettings<O extends javascript.NodeProjectOptions>(
     dependencies.push(packageToString(devDepsMap['projen-project']));
     delete devDepsMap['projen-project'];
   }
-  var tsconfig = undefined;
-  var compilerOptions = undefined;
+  var tsconfig: TypescriptConfigOptions | undefined = undefined;
   if ('tsconfig' in options) {
-    tsconfig = options.tsconfig as object;
-    if ('compilerOptions' in tsconfig) {
-      compilerOptions = tsconfig.compilerOptions as object;
-    }
+    tsconfig = options.tsconfig as TypescriptConfigOptions;
   }
-  const projectOpts: O & InternalProjenProjectOptions = {
+  const projectOpts: (O | T) & InternalProjenProjectOptions = {
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {
       ...tsconfig,
       compilerOptions: {
-        ...compilerOptions,
+        ...tsconfig?.compilerOptions,
         outDir: options.artifactsDirectory ?? 'dist',
         declaration: false,
       },
