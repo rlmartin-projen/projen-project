@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { SampleFile, TextFile, javascript } from 'projen';
 import { TypeScriptProject } from 'projen/lib/typescript';
-import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
+import { allCases, AllCases, loadFiles, mergeUnique, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
   SCAFFOLDING, GENERATED
@@ -35,11 +35,21 @@ export function loadSettings<O extends javascript.NodeProjectOptions>(
     dependencies.push(packageToString(devDepsMap['projen-project']));
     delete devDepsMap['projen-project'];
   }
+  var tsconfig = undefined;
+  var compilerOptions = undefined;
+  if ('tsconfig' in options) {
+    tsconfig = options.tsconfig as object;
+    if ('compilerOptions' in tsconfig) {
+      compilerOptions = tsconfig.compilerOptions as object;
+    }
+  }
   const projectOpts: O & InternalProjenProjectOptions = {
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {
+      ...tsconfig,
       compilerOptions: {
+        ...compilerOptions,
         outDir: options.artifactsDirectory ?? 'dist',
         declaration: false,
       },
