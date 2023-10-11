@@ -10,7 +10,6 @@ export enum FileType {
 
 interface InternalProjenProjectOptions {
   readonly _name: AllCases;
-  readonly tsconfig: TypescriptConfigOptions;
 }
 
 export interface ProjectFile {
@@ -23,10 +22,6 @@ export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
   readonly options: O;
   readonly files: ProjectFile[];
 }
-
-// function hasTsconfig<O extends javascript.NodeProjectOptions>(options: O | typescript.TypeScriptProject): options is typescript.TypeScriptProject {
-//   return (options as typescript.TypeScriptProject).tsconfig !== undefined;
-// }
 
 export function loadSettings<O extends javascript.NodeProjectOptions, T extends TypeScriptProjectOptions>(
   options: O | T,
