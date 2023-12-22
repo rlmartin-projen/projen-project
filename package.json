@@ -60,7 +60,7 @@
     "projen": "~0"
   },
   "dependencies": {
-    "liquidjs": "~9",
+    "liquidjs": "~10",
     "projen": "~0"
   },
   "bundledDependencies": [

@@ -2,7 +2,7 @@ import { cdk } from 'projen';
 import { NpmAccess } from 'projen/lib/javascript';
 
 const dependencies = ['projen@~0'];
-const bundledDependencies = ['liquidjs@~9'];
+const bundledDependencies = ['liquidjs@~10'];
 const majorVersion = 0;
 
 const project = new cdk.JsiiProject({

@@ -94,7 +94,7 @@
     },
     {
       "name": "liquidjs",
-      "version": "~9",
+      "version": "~10",
       "type": "bundled"
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "name": "liquidjs",
-      "version": "~9",
+      "version": "~10",
       "type": "runtime"
     },
     {
