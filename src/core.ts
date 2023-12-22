@@ -18,18 +18,18 @@ export interface ProjectFile {
   readonly fileType: FileType;
 }
 
-export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
-  readonly options: O;
+export interface ProjectSettings {
+  readonly options: any;
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends javascript.NodeProjectOptions, T extends TypeScriptProjectOptions>(
-  options: O | T,
+export function loadSettings(
+  options: any,
   filesDir: string,
   isProjenProject: boolean = false,
-): ProjectSettings<O | T> {
+): ProjectSettings {
   const dependencies = ['projen@~0'];
-  const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
+  const bundledDependencies = isProjenProject ? ['liquidjs@~10'] : [];
   const packageName = parsePackageName(options.name);
   const devDepsMap = squashPackageNames((options.devDeps ?? []).map(parsePackageName));
   if (devDepsMap['projen-project'] && isProjenProject) {
@@ -40,7 +40,7 @@ export function loadSettings<O extends javascript.NodeProjectOptions, T extends 
   if ('tsconfig' in options) {
     tsconfig = options.tsconfig as TypescriptConfigOptions;
   }
-  const projectOpts: (O | T) & InternalProjenProjectOptions = {
+  const projectOpts: (javascript.NodeProjectOptions | TypeScriptProjectOptions) & InternalProjenProjectOptions = {
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {

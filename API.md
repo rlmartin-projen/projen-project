@@ -1725,7 +1725,7 @@ const projectSettings: ProjectSettings = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.files">files</a></code> | <code><a href="#@rlmartin-projen/projen-project.ProjectFile">ProjectFile</a>[]</code> | *No description.* |
-| <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.options">options</a></code> | <code>projen.javascript.NodeProjectOptions</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.ProjectSettings.property.options">options</a></code> | <code>any</code> | *No description.* |
 
 ---
 
@@ -1742,10 +1742,10 @@ public readonly files: ProjectFile[];
 ##### `options`<sup>Required</sup> <a name="options" id="@rlmartin-projen/projen-project.ProjectSettings.property.options"></a>
 
 ```typescript
-public readonly options: NodeProjectOptions;
+public readonly options: any;
 ```
 
-- *Type:* projen.javascript.NodeProjectOptions
+- *Type:* any
 
 ---
 
