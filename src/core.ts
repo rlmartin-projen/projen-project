@@ -36,9 +36,10 @@ export function loadSettings(
   filesDir: string,
   isProjenProject: boolean = false,
 ): ProjectSettings {
-  const { dependencies, jsiiVersion, nodeVersion } = sharedOptions;
+  const { dependencies, jsiiVersion, nodeVersion: nodeVersionDefault } = sharedOptions;
   const bundledDependencies = isProjenProject ? sharedOptions.bundledDependencies : [];
   const packageName = parsePackageName(options.name);
+  const nodeVersion = options.nodeVersion ?? nodeVersionDefault;
   const devDepsMap = squashPackageNames((options.devDeps ?? []).map(parsePackageName));
   if (devDepsMap['projen-project'] && isProjenProject) {
     dependencies.push(packageToString(devDepsMap['projen-project']));
