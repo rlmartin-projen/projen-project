@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { SampleFile, TextFile, javascript } from 'projen';
+import { JsiiProjectOptions } from 'projen/lib/cdk';
 import { TypescriptConfigOptions } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
@@ -18,18 +19,25 @@ export interface ProjectFile {
   readonly fileType: FileType;
 }
 
-export interface ProjectSettings<O extends javascript.NodeProjectOptions> {
-  readonly options: O;
+export interface ProjectSettings {
+  readonly options: any;
   readonly files: ProjectFile[];
 }
 
-export function loadSettings<O extends javascript.NodeProjectOptions, T extends TypeScriptProjectOptions>(
-  options: O | T,
+export const sharedOptions = {
+  bundledDependencies: ['liquidjs@~10'],
+  dependencies: ['projen@~0'],
+  jsiiVersion: '~5',
+  nodeVersion: '20',
+};
+
+export function loadSettings(
+  options: any,
   filesDir: string,
   isProjenProject: boolean = false,
-): ProjectSettings<O | T> {
-  const dependencies = ['projen@~0'];
-  const bundledDependencies = isProjenProject ? ['liquidjs@~9'] : [];
+): ProjectSettings {
+  const { dependencies, jsiiVersion, nodeVersion } = sharedOptions;
+  const bundledDependencies = isProjenProject ? sharedOptions.bundledDependencies : [];
   const packageName = parsePackageName(options.name);
   const devDepsMap = squashPackageNames((options.devDeps ?? []).map(parsePackageName));
   if (devDepsMap['projen-project'] && isProjenProject) {
@@ -40,7 +48,7 @@ export function loadSettings<O extends javascript.NodeProjectOptions, T extends 
   if ('tsconfig' in options) {
     tsconfig = options.tsconfig as TypescriptConfigOptions;
   }
-  const projectOpts: (O | T) & InternalProjenProjectOptions = {
+  const projectOpts: (javascript.NodeProjectOptions | TypeScriptProjectOptions) & InternalProjenProjectOptions & JsiiProjectOptions = {
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {
@@ -55,6 +63,9 @@ export function loadSettings<O extends javascript.NodeProjectOptions, T extends 
     devDeps: Object.values(devDepsMap).map(packageToString),
     peerDeps: squashPackages([...(options.peerDeps ?? []), ...dependencies]),
     bundledDeps: squashPackages([...(options.bundledDeps ?? []), ...bundledDependencies]),
+    jsiiVersion,
+    minNodeVersion: `${nodeVersion}.0.0`,
+    workflowNodeVersion: nodeVersion,
     _name: allCases(packageName.name),
   };
   const files = [
