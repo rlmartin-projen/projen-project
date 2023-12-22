@@ -1,10 +1,9 @@
 import { cdk } from 'projen';
 import { NpmAccess } from 'projen/lib/javascript';
+import { sharedOptions } from './src/core';
 
-const dependencies = ['projen@~0'];
-const bundledDependencies = ['liquidjs@~10'];
 const majorVersion = 0;
-const nodeVersion = '20';
+const { bundledDependencies, dependencies, jsiiVersion, nodeVersion } = sharedOptions;
 
 const project = new cdk.JsiiProject({
   author: 'Ryan Martin',
@@ -34,7 +33,7 @@ const project = new cdk.JsiiProject({
       branches: ['main'],
     },
   },
-  jsiiVersion: '~5',
+  jsiiVersion,
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
