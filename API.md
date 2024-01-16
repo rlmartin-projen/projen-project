@@ -4151,6 +4151,67 @@ public readonly rootdir: string;
 
 ---
 
+### SharedOptions <a name="SharedOptions" id="@rlmartin-projen/projen-project.SharedOptions"></a>
+
+#### Initializer <a name="Initializer" id="@rlmartin-projen/projen-project.SharedOptions.Initializer"></a>
+
+```typescript
+import { SharedOptions } from '@rlmartin-projen/projen-project'
+
+const sharedOptions: SharedOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@rlmartin-projen/projen-project.SharedOptions.property.bundledDependencies">bundledDependencies</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.SharedOptions.property.dependencies">dependencies</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.SharedOptions.property.jsiiVersion">jsiiVersion</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@rlmartin-projen/projen-project.SharedOptions.property.nodeVersion">nodeVersion</a></code> | <code>number</code> | *No description.* |
+
+---
+
+##### `bundledDependencies`<sup>Required</sup> <a name="bundledDependencies" id="@rlmartin-projen/projen-project.SharedOptions.property.bundledDependencies"></a>
+
+```typescript
+public readonly bundledDependencies: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `dependencies`<sup>Required</sup> <a name="dependencies" id="@rlmartin-projen/projen-project.SharedOptions.property.dependencies"></a>
+
+```typescript
+public readonly dependencies: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `jsiiVersion`<sup>Required</sup> <a name="jsiiVersion" id="@rlmartin-projen/projen-project.SharedOptions.property.jsiiVersion"></a>
+
+```typescript
+public readonly jsiiVersion: string;
+```
+
+- *Type:* string
+
+---
+
+##### `nodeVersion`<sup>Required</sup> <a name="nodeVersion" id="@rlmartin-projen/projen-project.SharedOptions.property.nodeVersion"></a>
+
+```typescript
+public readonly nodeVersion: number;
+```
+
+- *Type:* number
+
+---
+
 
 
 ## Enums <a name="Enums" id="Enums"></a>

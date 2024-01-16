@@ -24,11 +24,19 @@ export interface ProjectSettings {
   readonly files: ProjectFile[];
 }
 
-export const sharedOptions = {
+export type NodeVersion = 20 | 18;
+export interface SharedOptions {
+  readonly bundledDependencies: string[];
+  readonly dependencies: string[];
+  readonly jsiiVersion: string;
+  readonly nodeVersion: NodeVersion;
+}
+
+export const sharedOptions: SharedOptions = {
   bundledDependencies: ['liquidjs@~10'],
   dependencies: ['projen@~0'],
   jsiiVersion: '~5',
-  nodeVersion: '20',
+  nodeVersion: 20,
 };
 
 export function loadSettings(

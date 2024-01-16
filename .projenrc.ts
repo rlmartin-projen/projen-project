@@ -15,7 +15,7 @@ const project = new cdk.JsiiProject({
   releaseToNpm: true,
   npmAccess: NpmAccess.PUBLIC,
   minNodeVersion: `${nodeVersion}.0.0`,
-  workflowNodeVersion: nodeVersion,
+  workflowNodeVersion: nodeVersion.toString(),
   majorVersion,
   releaseBranches: {
     dev: { prerelease: 'dev', npmDistTag: 'dev', majorVersion },
