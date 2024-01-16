@@ -3,7 +3,7 @@ import { NpmAccess } from 'projen/lib/javascript';
 import { sharedOptions } from './src/core';
 
 const majorVersion = 0;
-const { bundledDependencies, dependencies, jsiiVersion, nodeVersion } = sharedOptions;
+const { bundledDependencies, dependencies, jestVersion, jsiiVersion, nodeVersion } = sharedOptions;
 
 const project = new cdk.JsiiProject({
   author: 'Ryan Martin',
@@ -34,6 +34,14 @@ const project = new cdk.JsiiProject({
     },
   },
   jsiiVersion,
+  tsconfigDev: {
+    compilerOptions: {
+      outDir: 'dist',
+    },
+  },
+  jestOptions: {
+    jestVersion,
+  },
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
