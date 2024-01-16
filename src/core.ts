@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { SampleFile, TextFile, javascript } from 'projen';
 import { JsiiProjectOptions } from 'projen/lib/cdk';
-import { TypescriptConfigOptions } from 'projen/lib/javascript';
+import { JestOptions, TypescriptConfigOptions } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
@@ -28,6 +28,7 @@ export type NodeVersion = 20 | 18;
 export interface SharedOptions {
   readonly bundledDependencies: string[];
   readonly dependencies: string[];
+  readonly jestVersion: string;
   readonly jsiiVersion: string;
   readonly nodeVersion: NodeVersion;
 }
@@ -35,6 +36,7 @@ export interface SharedOptions {
 export const sharedOptions: SharedOptions = {
   bundledDependencies: ['liquidjs@~10'],
   dependencies: ['projen@~0'],
+  jestVersion: '29',
   jsiiVersion: '~5',
   nodeVersion: 20,
 };
@@ -44,7 +46,7 @@ export function loadSettings(
   filesDir: string,
   isProjenProject: boolean = false,
 ): ProjectSettings {
-  const { dependencies, jsiiVersion, nodeVersion: nodeVersionDefault } = sharedOptions;
+  const { dependencies, jestVersion, jsiiVersion, nodeVersion: nodeVersionDefault } = sharedOptions;
   const bundledDependencies = isProjenProject ? sharedOptions.bundledDependencies : [];
   const packageName = parsePackageName(options.name);
   const nodeVersion = options.nodeVersion ?? nodeVersionDefault;
@@ -56,6 +58,10 @@ export function loadSettings(
   var tsconfig: TypescriptConfigOptions | undefined = undefined;
   if ('tsconfig' in options) {
     tsconfig = options.tsconfig as TypescriptConfigOptions;
+  }
+  var jestOptions: JestOptions | undefined = undefined;
+  if ('jestOptions' in options) {
+    jestOptions = options.jestOptions as JestOptions;
   }
   const projectOpts: (javascript.NodeProjectOptions | TypeScriptProjectOptions) & InternalProjenProjectOptions & JsiiProjectOptions = {
     ...options,
@@ -72,6 +78,10 @@ export function loadSettings(
     devDeps: Object.values(devDepsMap).map(packageToString),
     peerDeps: squashPackages([...(options.peerDeps ?? []), ...dependencies]),
     bundledDeps: squashPackages([...(options.bundledDeps ?? []), ...bundledDependencies]),
+    jestOptions: {
+      jestVersion,
+      ...jestOptions,
+    },
     jsiiVersion,
     minNodeVersion: `${nodeVersion}.0.0`,
     workflowNodeVersion: nodeVersion,
