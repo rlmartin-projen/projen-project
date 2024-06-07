@@ -10,7 +10,7 @@ const project = new cdk.JsiiProject({
   authorAddress: 'rlmartin@gmail.com',
   defaultReleaseBranch: 'main',
   name: '@rlmartin-projen/projen-project',
-  repositoryUrl: 'git@github.com:rlmartin/projen-project.git',
+  repositoryUrl: 'https://github.com/rlmartin-projen/projen-project',
   projenrcTs: true,
   releaseToNpm: true,
   npmAccess: NpmAccess.PUBLIC,
