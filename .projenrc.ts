@@ -9,7 +9,7 @@ const project = new cdk.JsiiProject({
   author: 'Ryan Martin',
   authorAddress: 'rlmartin@gmail.com',
   defaultReleaseBranch: 'main',
- name: '@vestahealthcare/projen-project',
+  name: '@vestahealthcare/projen-project',
   repositoryUrl: 'https://github.com/vestahealthcare/projen-project',
   projenrcTs: true,
   releaseToNpm: true,
