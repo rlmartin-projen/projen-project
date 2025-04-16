@@ -13,7 +13,7 @@ const project = new cdk.JsiiProject({
   repositoryUrl: 'https://github.com/vestahealthcare/projen-project',
   projenrcTs: true,
   releaseToNpm: true,
-  npmAccess: NpmAccess.RESTRICTED,
+  npmAccess: NpmAccess.PUBLIC,
   npmDistTag: 'latest',
   npmRegistryUrl: 'https://npm.pkg.github.com',
   minNodeVersion: `${nodeVersion}.0.0`,
