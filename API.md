@@ -702,6 +702,7 @@ When given a project, this it the project itself.
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.packageManager">packageManager</a></code> | <code>projen.javascript.NodePackageManager</code> | The package manager to use. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.runScriptCommand">runScriptCommand</a></code> | <code>string</code> | The command to use to run scripts (e.g. `yarn run` or `npm run` depends on the package manager). |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.autoMerge">autoMerge</a></code> | <code>projen.github.AutoMerge</code> | Component that sets up mergify for merging approved pull requests. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.biome">biome</a></code> | <code>projen.javascript.Biome</code> | *No description.* |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.buildWorkflow">buildWorkflow</a></code> | <code>projen.build.BuildWorkflow</code> | The PR build GitHub workflow. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.buildWorkflowJobId">buildWorkflowJobId</a></code> | <code>string</code> | The job ID of the build workflow. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProject.property.jest">jest</a></code> | <code>projen.javascript.Jest</code> | The Jest configuration (if enabled). |
@@ -1233,6 +1234,16 @@ public readonly autoMerge: AutoMerge;
 - *Type:* projen.github.AutoMerge
 
 Component that sets up mergify for merging approved pull requests.
+
+---
+
+##### `biome`<sup>Optional</sup> <a name="biome" id="@rlmartin-projen/projen-project.ProjenProject.property.biome"></a>
+
+```typescript
+public readonly biome: Biome;
+```
+
+- *Type:* projen.javascript.Biome
 
 ---
 
@@ -1775,6 +1786,7 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code>projen.javascript.CodeArtifactOptions</code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -1802,9 +1814,11 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.scripts">scripts</a></code> | <code>{[ key: string ]: string}</code> | npm scripts to include. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.stability">stability</a></code> | <code>string</code> | Package's Stability. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.yarnBerryOptions">yarnBerryOptions</a></code> | <code>projen.javascript.YarnBerryOptions</code> | Options for Yarn Berry. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -1827,6 +1841,8 @@ const projenProjectOptions: ProjenProjectOptions = { ... }
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.defaultReleaseBranch">defaultReleaseBranch</a></code> | <code>string</code> | The name of the main release branch. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.artifactsDirectory">artifactsDirectory</a></code> | <code>string</code> | A directory which will contain build artifacts. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.autoApproveUpgrades">autoApproveUpgrades</a></code> | <code>boolean</code> | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.biome">biome</a></code> | <code>boolean</code> | Setup Biome. |
+| <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.biomeOptions">biomeOptions</a></code> | <code>projen.javascript.BiomeOptions</code> | Biome options. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.buildWorkflow">buildWorkflow</a></code> | <code>boolean</code> | Define a GitHub workflow for building PRs. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.buildWorkflowOptions">buildWorkflowOptions</a></code> | <code>projen.javascript.BuildWorkflowOptions</code> | Options for PR build workflow. |
 | <code><a href="#@rlmartin-projen/projen-project.ProjenProjectOptions.property.buildWorkflowTriggers">buildWorkflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
@@ -2454,6 +2470,19 @@ this will be what you `package.json` will eventually include.
 
 ---
 
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.codeArtifactOptions"></a>
 
 ```typescript
@@ -2802,7 +2831,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -2891,6 +2920,21 @@ Options for Yarn Berry.
 
 ---
 
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
+
+---
+
 ##### `jsiiReleaseVersion`<sup>Optional</sup> <a name="jsiiReleaseVersion" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.jsiiReleaseVersion"></a>
 
 ```typescript
@@ -2935,6 +2979,38 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+- `$SUGGESTED_BUMP`: the suggested bump action based on commits. One of `major|minor|patch|none`.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -3247,6 +3323,32 @@ public readonly autoApproveUpgrades: boolean;
 Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued).
 
 Throw if set to true but `autoApproveOptions` are not defined.
+
+---
+
+##### `biome`<sup>Optional</sup> <a name="biome" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.biome"></a>
+
+```typescript
+public readonly biome: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Setup Biome.
+
+---
+
+##### `biomeOptions`<sup>Optional</sup> <a name="biomeOptions" id="@rlmartin-projen/projen-project.ProjenProjectOptions.property.biomeOptions"></a>
+
+```typescript
+public readonly biomeOptions: BiomeOptions;
+```
+
+- *Type:* projen.javascript.BiomeOptions
+- *Default:* default options
+
+Biome options.
 
 ---
 
@@ -4106,7 +4208,7 @@ public readonly jsiiVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "1.x"
+- *Default:* "~5.6.0"
 
 Version of the jsii compiler to use.
 

@@ -6,7 +6,7 @@ import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescri
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
 export enum FileType {
-  SCAFFOLDING, GENERATED
+  SCAFFOLDING, GENERATED,
 }
 
 interface InternalProjenProjectOptions {
