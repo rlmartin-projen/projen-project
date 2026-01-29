@@ -24,7 +24,7 @@ export interface ProjectSettings {
   readonly files: ProjectFile[];
 }
 
-export type NodeVersion = 20 | 18;
+export type NodeVersion = 24 | 20 | 18;
 export interface SharedOptions {
   readonly bundledDependencies: string[];
   readonly dependencies: string[];
@@ -38,7 +38,7 @@ export const sharedOptions: SharedOptions = {
   dependencies: ['projen@~0'],
   jestVersion: '29',
   jsiiVersion: '~5',
-  nodeVersion: 20,
+  nodeVersion: 24,
 };
 
 export function loadSettings(
