@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Liquid } from 'liquidjs';
 import { GithubWorkflow } from 'projen/lib/github';
-import { NodeProject, NodeProjectOptions } from 'projen/lib/javascript';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { NodeProject, NodeProjectOptions } from 'projen/lib/javascript';
 import { FileType, ProjectFile } from './core';
 
 export interface AllCases {
