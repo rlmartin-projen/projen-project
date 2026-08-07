@@ -1,6 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Liquid } from 'liquidjs';
+import { GithubWorkflow } from 'projen/lib/github';
+import { NodeProject, NodeProjectOptions } from 'projen/lib/javascript';
+import { JobPermission } from 'projen/lib/github/workflows-model';
 import { FileType, ProjectFile } from './core';
 
 export interface AllCases {
@@ -114,6 +117,46 @@ export function titleCase(str: string): string {
   return pascalCase(str)
     .replace(/[A-Z]/g, s => ` ${s}`)
     .trim();
+}
+
+export function unifyNpmReleaseTrigger(project: NodeProject, options: NodeProjectOptions, unifiedName: string = 'release-all') {
+  const { defaultReleaseBranch, npmTrustedPublishing, releaseToNpm, releaseBranches } = options;
+  // When publishing to NPM with trusted publishing, only one release workflow
+  // file can be specified. In this case, unify the release workflows under a single file.
+  if (project.github && releaseToNpm && npmTrustedPublishing && releaseBranches) {
+    const releaseBranchNames = Object.keys(releaseBranches);
+    const mainReleaseName = 'release';
+    // Add workflow_call trigger to release workflows so they can be called as
+    // reusable workflows from release-all.yml.
+    for (const workflowName of [mainReleaseName, ...releaseBranchNames.map(name => `release-${name}`)]) {
+      project.github.tryFindWorkflow(workflowName)?.on({ workflowCall: {} });
+    }
+
+    const releaseAll = new GithubWorkflow(project.github, unifiedName, {});
+    releaseAll.on({
+      push: {
+        branches: [defaultReleaseBranch, ...releaseBranchNames],
+      },
+    });
+    releaseAll.addJob('publish-prod', {
+      if: `github.ref_name == '${defaultReleaseBranch}'`,
+      uses: `./.github/workflows/${mainReleaseName}.yml`,
+      permissions: {
+        idToken: JobPermission.WRITE,
+        contents: JobPermission.WRITE,
+      },
+    });
+    releaseBranchNames.forEach(name => {
+      releaseAll.addJob(`publish-${name}`, {
+        if: `github.ref_name == '${name}'`,
+        uses: `./.github/workflows/release-${name}.yml`,
+        permissions: {
+          idToken: JobPermission.WRITE,
+          contents: JobPermission.WRITE,
+        },
+      });
+    });
+  }
 }
 
 function walkDirectory(dir: string) {

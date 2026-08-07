@@ -1,11 +1,13 @@
 import { cdk } from 'projen';
 import { NpmAccess } from 'projen/lib/javascript';
+import { ReleaseTrigger } from 'projen/lib/release';
 import { sharedOptions } from './src/core';
+import { unifyNpmReleaseTrigger } from './src/helpers';
 
 const majorVersion = 0;
 const { bundledDependencies, dependencies, jestVersion, jsiiVersion, nodeVersion } = sharedOptions;
 
-const project = new cdk.JsiiProject({
+const options = {
   author: 'Ryan Martin',
   authorAddress: 'rlmartin@gmail.com',
   defaultReleaseBranch: 'main',
@@ -21,6 +23,7 @@ const project = new cdk.JsiiProject({
   releaseBranches: {
     dev: { prerelease: 'dev', npmDistTag: 'dev', majorVersion },
   },
+  releaseTrigger: ReleaseTrigger.workflowDispatch(),
   devDeps: dependencies,
   deps: dependencies.concat(bundledDependencies),
   peerDeps: dependencies,
@@ -48,5 +51,7 @@ const project = new cdk.JsiiProject({
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
-});
+} as cdk.JsiiProjectOptions;
+const project = new cdk.JsiiProject(options);
+unifyNpmReleaseTrigger(project, options);
 project.synth();

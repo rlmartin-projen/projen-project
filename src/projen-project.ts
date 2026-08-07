@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { cdk } from 'projen';
 import { addFiles, loadSettings } from './core';
+import { unifyNpmReleaseTrigger } from './helpers';
 
 export interface ProjenProjectOptions extends cdk.JsiiProjectOptions {
 }
@@ -16,5 +17,7 @@ export class ProjenProject extends cdk.JsiiProject {
     super(projectOpts);
     // Files from templates
     addFiles(this, files);
+    // Cleanup for NPM trusted publisher releases
+    unifyNpmReleaseTrigger(this, options);
   }
 }

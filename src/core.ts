@@ -2,6 +2,7 @@ import * as path from 'path';
 import { SampleFile, TextFile, javascript } from 'projen';
 import { JsiiProjectOptions } from 'projen/lib/cdk';
 import { JestOptions, TypescriptConfigOptions } from 'projen/lib/javascript';
+import { ReleaseTrigger } from 'projen/lib/release';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { allCases, AllCases, loadFiles, packageToString, parsePackageName, squashPackageNames, squashPackages } from './helpers';
 
@@ -64,6 +65,8 @@ export function loadSettings(
     jestOptions = options.jestOptions as JestOptions;
   }
   const projectOpts: (javascript.NodeProjectOptions | TypeScriptProjectOptions) & InternalProjenProjectOptions & JsiiProjectOptions = {
+    // NPM trusted publishing only supports one release file, start setup here
+    releaseTrigger: options.releaseBranches && options.npmTrustedPublishing ? ReleaseTrigger.workflowDispatch() : undefined,
     ...options,
     sampleCode: false, // Needed to prevent a default index.ts from being generated, which happens elsewhere.
     tsconfig: {
